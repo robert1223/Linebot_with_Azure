@@ -59,7 +59,7 @@ handler = WebhookHandler(os.getenv('Line_secret')) # linebot secret
 
 
 # Linebot接收訊息
-@app.route("/", methods=['POST'])
+@app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value: 驗證訊息來源
     signature = request.headers['X-Line-Signature']
