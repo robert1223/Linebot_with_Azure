@@ -1,0 +1,30 @@
+{
+  "type": "bubble",
+  "hero": {
+    "type": "image",
+    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+    "size": "full",
+    "action": {
+      "type": "uri",
+      "uri": "http://linecorp.com/"
+    },
+    "aspectRatio": "20:20",
+    "animated": true,
+    "aspectMode": "fit"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "margin": "none",
+        "size": "lg",
+        "weight": "bold",
+        "contents": [],
+        "wrap": true,
+        "text": "123564065406504650654065606546066540066504650650465065"
+      }
+    ]
+  }
+}
