@@ -11,6 +11,7 @@ from azure.cognitiveservices.vision.computervision.models import OperationStatus
 from azure.cognitiveservices.vision.face.models import TrainingStatusType
 from azure.cognitiveservices.vision.face import FaceClient
 
+from datetime import datetime, timezone, timedelta
 import sys
 import time
 import os
@@ -31,7 +32,6 @@ import Azure_Description
 
 
 
-
 # 取得imgur相關資訊
 IMGUR_CONFIG = {
   "client_id": os.getenv('IMGUR_Client_ID'),
@@ -40,8 +40,6 @@ IMGUR_CONFIG = {
   "refresh_token": os.getenv('Postman_Refresh_token')
 }
 IMGUR_CLIENT = Imgur(config=IMGUR_CONFIG)
-
-
 
 
 # 建立Flask
@@ -96,45 +94,43 @@ def handle_image_message(event):
             f.write(chunk)
 
     # 將圖片上傳到imgur
-    image = IMGUR_CLIENT.image_upload(
-    ImageName, "title", "description")
+    image = IMGUR_CLIENT.image_upload(ImageName, "title", "description")
     Img_Url = image["response"]["data"]["link"]
 
-    name = Azure_Face_Recognition.My_Recognition(filename)
+    name = Azure_Face_Recognition.My_Recognition(ImageName)
 
     if name != "":
         now = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M")
         output = "{0}, {1}".format(name, now)
+        link = Img_Url
 
     else:
         plate = Azure_OCR.My_OCR(Img_Url)
-        link_ob = Azure_Object_Detection.My_Object_Detection(Img_Url, filename)
+        link_ob = Azure_Object_Detection.My_Object_Detection(Img_Url, ImageName)
         if len(plate) > 0:
             output = "License Plate: {}".format(plate)
         else:
-            output = Azure_Description.My_Description(link)
+            output = Azure_Description.My_Description(Img_Url)
         link = link_ob
 
-        # 讀取Flex_Message 所需資料
-        flex_data = json.load(open('./flex_data.txt', 'r'))
+    
+    
+    # 讀取Flex_Message 所需資料
+    flex_data = json.load(open('./flex_data.txt', 'r'))
 
-        # 將flex meaasge內的url及text做更改
-        flex_data['hero']['url']=link
-        flex_data['body']['contents'][0]['text']=output
+    # 將flex meaasge內的url及text做更改
+    flex_data['hero']['url']=link
+    flex_data['body']['contents'][0]['text']=output
 
-        LINE_BOT.reply_message(
+        
+    # Line 回覆訊息
+    line_bot_api.reply_message(
         event.reply_token, [FlexSendMessage(alt_text="Report", contents=flex_data)]
     )
 
 
 if __name__=="__main__":
     app.run()
-
-
-
-
-
-
 
 
 

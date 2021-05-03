@@ -10,7 +10,7 @@ from imgur_python import Imgur
 
 def My_Object_Detection(url, filename):
 
-    SUBSCRIPTION_KEY = os.getenv('Object_Detection_KEY')            
+    SUBSCRIPTION_KEY = os.getenv('Object_Detection_KEY')         
     ENDPOINT = os.getenv('Object_Detection_ENDPOINT')
     CV_CLIENT = ComputerVisionClient(
         ENDPOINT, CognitiveServicesCredentials(SUBSCRIPTION_KEY)
@@ -56,15 +56,14 @@ def My_Object_Detection(url, filename):
 
 
 if __name__=="__main__":
-	
-	# 爬取網站圖片,並儲存於本地端 
+
+    # 爬取網站圖片,並儲存於本地端 
     uri ='https://anntw-prod.s3.amazonaws.com/assets/images/000/020/997/big/crocodile-817680_640.jpg'
     res = requests.get(uri).content
     filename = './image/test.jpg'
     with open(filename,'wb') as f:
         f.write(res)
-                       
-    # 取得imgur相關資訊
+
     IMGUR_CONFIG = {
       "client_id": os.getenv('IMGUR_Client_ID'),
       "client_secret": os.getenv('IMGUR_Client_Secret'),
@@ -72,7 +71,7 @@ if __name__=="__main__":
       "refresh_token": os.getenv('Postman_Refresh_token')
     }
     IMGUR_CLIENT = Imgur(config=IMGUR_CONFIG)
-
+        
     image = IMGUR_CLIENT.image_upload(
       filename, "title", "description")
     url = image["response"]["data"]["link"]

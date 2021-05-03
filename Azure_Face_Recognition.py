@@ -21,7 +21,7 @@ def My_Recognition(filename):
 
 
 	# 人臉辨識
-	img = open("./image/{}".format(filename), "r+b")
+	img = open(filename, "r+b")
 	detected_face = FACE_CLIENT.face.detect_with_stream(
 	    img, detection_model="detection_01"
 	)
