@@ -16,6 +16,15 @@ def My_Object_Detection(url, filename):
         ENDPOINT, CognitiveServicesCredentials(SUBSCRIPTION_KEY)
         )
 
+    IMGUR_CONFIG = {
+      "client_id": os.getenv('IMGUR_Client_ID'),
+      "client_secret": os.getenv('IMGUR_Client_Secret'),
+      "access_token": os.getenv('Postman_Access_Token'),
+      "refresh_token": os.getenv('Postman_Refresh_token')
+    }
+    IMGUR_CLIENT = Imgur(config=IMGUR_CONFIG)
+        
+
 
     img = Image.open(filename)
     draw = ImageDraw.Draw(img)
