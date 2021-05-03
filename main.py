@@ -45,7 +45,7 @@ IMGUR_CLIENT = Imgur(config=IMGUR_CONFIG)
 
 
 # 建立Flask
-app = Flask(__name__, static_folder='./static', static_url_path='/static')
+app = Flask(__name__)
 
 # 讀取linebot資訊
 # secretFile = json.load(open('./secretFile.txt', 'r'))
